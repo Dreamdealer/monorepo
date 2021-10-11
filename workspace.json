@@ -1,0 +1,132 @@
+{
+  "version": 2,
+  "projects": {
+    "johanvantongeren.com": {
+      "root": "apps/johanvantongeren.com",
+      "sourceRoot": "apps/johanvantongeren.com/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/web:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/johanvantongeren.com",
+            "index": "apps/johanvantongeren.com/src/index.html",
+            "baseHref": "/",
+            "main": "apps/johanvantongeren.com/src/main.tsx",
+            "polyfills": "apps/johanvantongeren.com/src/polyfills.ts",
+            "tsConfig": "apps/johanvantongeren.com/tsconfig.app.json",
+            "assets": [
+              "apps/johanvantongeren.com/src/favicon.ico",
+              "apps/johanvantongeren.com/src/assets"
+            ],
+            "styles": [],
+            "scripts": [],
+            "webpackConfig": "@nrwl/react/plugins/webpack"
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/johanvantongeren.com/src/environments/environment.ts",
+                  "with": "apps/johanvantongeren.com/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/web:dev-server",
+          "options": {
+            "buildTarget": "johanvantongeren.com:build",
+            "hmr": true
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "johanvantongeren.com:build:production",
+              "hmr": false
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": [
+              "apps/johanvantongeren.com/**/*.{ts,tsx,js,jsx}"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/johanvantongeren.com"],
+          "options": {
+            "jestConfig": "apps/johanvantongeren.com/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "johanvantongeren.com-e2e": {
+      "root": "apps/johanvantongeren.com-e2e",
+      "sourceRoot": "apps/johanvantongeren.com-e2e/src",
+      "projectType": "application",
+      "targets": {
+        "e2e": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/johanvantongeren.com-e2e/cypress.json",
+            "devServerTarget": "johanvantongeren.com:serve",
+            "tsConfig": "apps/johanvantongeren.com-e2e/tsconfig.json"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "johanvantongeren.com:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/johanvantongeren.com-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/react"
+  },
+  "generators": {
+    "@nrwl/react": {
+      "application": {
+        "style": "styled-components",
+        "linter": "eslint",
+        "babel": true
+      },
+      "component": {
+        "style": "styled-components"
+      },
+      "library": {
+        "style": "styled-components",
+        "linter": "eslint"
+      }
+    }
+  },
+  "defaultProject": "johanvantongeren.com"
+}
