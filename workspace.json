@@ -1,6 +1,110 @@
 {
   "version": 2,
   "projects": {
+    "homepage": {
+      "root": "apps/homepage",
+      "sourceRoot": "apps/homepage/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/web:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/homepage",
+            "index": "apps/homepage/src/index.html",
+            "baseHref": "/",
+            "main": "apps/homepage/src/main.tsx",
+            "polyfills": "apps/homepage/src/polyfills.ts",
+            "tsConfig": "apps/homepage/tsconfig.app.json",
+            "assets": [
+              "apps/homepage/src/favicon.ico",
+              "apps/homepage/src/assets"
+            ],
+            "styles": [],
+            "scripts": [],
+            "webpackConfig": "@nrwl/react/plugins/webpack"
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/homepage/src/environments/environment.ts",
+                  "with": "apps/homepage/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/web:dev-server",
+          "options": {
+            "buildTarget": "homepage:build",
+            "hmr": true
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "homepage:build:production",
+              "hmr": false
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/homepage/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/homepage"],
+          "options": {
+            "jestConfig": "apps/homepage/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "homepage-e2e": {
+      "root": "apps/homepage-e2e",
+      "sourceRoot": "apps/homepage-e2e/src",
+      "projectType": "application",
+      "targets": {
+        "e2e": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/homepage-e2e/cypress.json",
+            "devServerTarget": "homepage:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "homepage:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/homepage-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    },
     "johanvantongeren.com": {
       "root": "apps/johanvantongeren.com",
       "sourceRoot": "apps/johanvantongeren.com/src",
@@ -104,6 +208,84 @@
           "outputs": ["{options.outputFile}"],
           "options": {
             "lintFilePatterns": ["apps/johanvantongeren.com-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    },
+    "vue-todo": {
+      "projectType": "application",
+      "root": "apps/vue-todo",
+      "sourceRoot": "apps/vue-todo/src",
+      "targets": {
+        "build": {
+          "executor": "@nx-plus/vue:browser",
+          "options": {
+            "dest": "dist/apps/vue-todo",
+            "index": "apps/vue-todo/public/index.html",
+            "main": "apps/vue-todo/src/main.ts",
+            "tsConfig": "apps/vue-todo/tsconfig.app.json"
+          },
+          "configurations": {
+            "production": {
+              "mode": "production",
+              "filenameHashing": true,
+              "productionSourceMap": true,
+              "css": {
+                "extract": true,
+                "sourceMap": false
+              }
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nx-plus/vue:dev-server",
+          "options": {
+            "browserTarget": "vue-todo:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "vue-todo:build:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/vue-todo/**/*.{ts,tsx,vue}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/vue-todo"],
+          "options": {
+            "jestConfig": "apps/vue-todo/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "vue-todo-e2e": {
+      "root": "apps/vue-todo-e2e",
+      "sourceRoot": "apps/vue-todo-e2e/src",
+      "projectType": "application",
+      "targets": {
+        "e2e": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/vue-todo-e2e/cypress.json",
+            "devServerTarget": "vue-todo:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "vue-todo:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/vue-todo-e2e/**/*.{js,ts}"]
           }
         }
       }

@@ -27,12 +27,22 @@
     ]
   },
   "projects": {
+    "homepage": {
+      "tags": []
+    },
+    "homepage-e2e": {
+      "tags": [],
+      "implicitDependencies": ["homepage"]
+    },
     "johanvantongeren.com": {
       "tags": []
     },
-    "johanvantongeren.com-e2e": {
+    "vue-todo": {
+      "tags": []
+    },
+    "vue-todo-e2e": {
       "tags": [],
-      "implicitDependencies": ["johanvantongeren.com"]
+      "implicitDependencies": ["vue-todo"]
     }
   }
 }
