@@ -17,6 +17,7 @@ export interface State {
   }[];
   newItemValue: string;
   foundPeople: [];
+  selectedPerson: number;
 }
 
 export const key: InjectionKey<Store<State>> = Symbol();
@@ -38,6 +39,7 @@ export const store = createStore<State>({
       ],
       newItemValue: 'Call @h',
       foundPeople: [],
+      selectedPerson: 1,
     };
   },
   mutations: {
@@ -64,6 +66,21 @@ export const store = createStore<State>({
     },
     changeNewItemValue(state, newValue) {
       state.newItemValue = newValue;
+    },
+    resetSelectedPerson(state) {
+      state.selectedPerson = 1;
+    },
+    previousPerson(state) {
+      state.selectedPerson--;
+      if (state.selectedPerson < 1) {
+        state.selectedPerson = state.foundPeople.length;
+      }
+    },
+    nextPerson(state) {
+      state.selectedPerson++;
+      if (state.selectedPerson > state.foundPeople.length) {
+        state.selectedPerson = 1;
+      }
     },
     toggleChecked(state, id) {
       const itemIndex = state.items.findIndex((item) => item.id === id);
