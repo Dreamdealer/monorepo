@@ -1,6 +1,7 @@
 <template>
   <section>
     <h1>{{ title }}</h1>
+    hint: try typing an @ followed by the name of a star wars character
     <div class="form">
       <input
         :value="newItemValue"
@@ -11,6 +12,11 @@
         <AddTask />
       </button>
     </div>
+    <ol>
+      <li v-bind:key="person" v-for="person in foundPeople">
+        {{ person.name }}
+      </li>
+    </ol>
     <ul>
       <li
         v-bind:key="item"
@@ -38,6 +44,7 @@
 </template>
 
 <script lang="ts">
+import axios from 'axios';
 import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
 import { store } from '../main';
@@ -46,7 +53,22 @@ export default defineComponent({
   name: 'TodoList',
   methods: {
     changeNewItemValue: (event: { target: { value: string } }) => {
-      store.commit('changeNewItemValue', event.target.value);
+      const value = event.target.value;
+      const atString =
+        value.indexOf('@') !== -1
+          ? value.substring(value.indexOf('@') + 1, value.length)
+          : false;
+
+      if (atString) {
+        axios
+          .get(`https://swapi.dev/api/people/?search=${atString}`)
+          .then((response: { data: { results: [] } }) => {
+            store.commit('saveFoundPeople', response.data.results);
+          });
+      } else {
+        store.commit('saveFoundPeople', []);
+      }
+      store.commit('changeNewItemValue', value);
     },
     addToList: () => {
       store.commit('addListItem');
@@ -63,6 +85,7 @@ export default defineComponent({
     ...mapState({
       items: 'items',
       newItemValue: 'newItemValue',
+      foundPeople: 'foundPeople',
     }),
   },
   props: {
@@ -81,6 +104,7 @@ section {
 h3 {
   margin: 40px 0 0;
 }
+ol,
 ul {
   list-style-type: none;
   padding: 0;

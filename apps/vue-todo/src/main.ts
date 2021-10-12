@@ -16,6 +16,7 @@ export interface State {
     checked: boolean;
   }[];
   newItemValue: string;
+  foundPeople: [];
 }
 
 export const key: InjectionKey<Store<State>> = Symbol();
@@ -28,11 +29,21 @@ export const store = createStore<State>({
         { id: 1, title: 'Feed Jabba The Hutt', checked: false },
         { id: 5, title: 'Shoot down the Death Star', checked: false },
         { id: 6, title: 'Learn Vue', checked: true },
+        { id: 7, title: 'Bribe the officer for the FUI ticket', checked: true },
+        {
+          id: 8,
+          title: 'Retreive Millenium Falcon from Impound',
+          checked: false,
+        },
       ],
-      newItemValue: 'Retreive Millenium Falcon from Impound',
+      newItemValue: 'Call @h',
+      foundPeople: [],
     };
   },
   mutations: {
+    saveFoundPeople(state, people) {
+      state.foundPeople = people;
+    },
     addListItem(state) {
       if (state.newItemValue != '') {
         const highestId = state.items.length
