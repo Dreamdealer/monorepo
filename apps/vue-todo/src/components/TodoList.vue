@@ -7,7 +7,9 @@
         @input="changeNewItemValue"
         placeholder="Add a new thing to do, Luke"
       />
-      <button v-on:click="addToList">➕</button>
+      <button v-on:click="addToList">
+        <AddTask />
+      </button>
     </div>
     <ul>
       <li v-bind:key="item" v-for="item in items">
@@ -32,6 +34,7 @@ export default defineComponent({
     },
     addToList: () => {
       store.commit('addListItem');
+      store.commit('changeNewItemValue', '');
     },
   },
   computed: {
@@ -78,6 +81,9 @@ a {
 
   button {
     flex-grow: 0;
+    margin-left: 10px;
+    background-color: #42b983;
+    border: 0;
   }
 
   input {
@@ -92,5 +98,11 @@ button {
   font-size: inherit;
   justify-content: center;
   align-items: center;
+  border-radius: 0;
+  border: 1px solid #666;
+
+  &:focus {
+    outline: none;
+  }
 }
 </style>
