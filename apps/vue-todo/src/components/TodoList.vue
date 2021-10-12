@@ -12,10 +12,26 @@
       </button>
     </div>
     <ul>
-      <li v-bind:key="item" v-for="item in items">
-        <SquareIcon v-if="!item.checked" class="icon" />
-        <CheckedSquareIcon v-if="item.checked" class="icon" />
-        {{ item.title }}
+      <li
+        v-bind:key="item"
+        v-for="item in items"
+        :data-item-id="item.id"
+        v-bind:class="item.checked ? 'checked' : 'unchecked'"
+      >
+        <SquareIcon
+          v-if="!item.checked"
+          class="icon"
+          v-on:click="toggleChecked(item.id)"
+        />
+        <CheckedSquareIcon
+          v-if="item.checked"
+          class="icon"
+          v-on:click="toggleChecked(item.id)"
+        />
+        <span>
+          {{ item.title }}
+        </span>
+        <TrashCanIcon v-on:click="removeItem(item.id)" />
       </li>
     </ul>
   </section>
@@ -35,6 +51,12 @@ export default defineComponent({
     addToList: () => {
       store.commit('addListItem');
       store.commit('changeNewItemValue', '');
+    },
+    toggleChecked: (id: number) => {
+      store.commit('toggleChecked', id);
+    },
+    removeItem: (id: number) => {
+      store.commit('removeItem', id);
     },
   },
   computed: {
@@ -65,16 +87,28 @@ ul {
   text-align: left;
 }
 li {
-  margin: 0 10px;
+  padding: 10px 0;
   display: flex;
   align-items: center;
+  border-bottom: 1px solid #999;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &.checked span {
+    text-decoration: line-through;
+  }
 
   .icon {
+    cursor: pointer;
     margin-right: 10px;
   }
-}
-a {
-  color: #42b983;
+
+  span {
+    display: flex;
+    flex-grow: 1;
+  }
 }
 .form {
   display: flex;
@@ -82,8 +116,12 @@ a {
   button {
     flex-grow: 0;
     margin-left: 10px;
-    background-color: #42b983;
+    background-color: #fea731;
     border: 0;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   input {
